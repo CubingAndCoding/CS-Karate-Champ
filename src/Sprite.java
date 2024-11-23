@@ -1,10 +1,10 @@
 import java.awt.*;
 
 public abstract class Sprite {
-    public Image image;
-    public int tileSize;
-    public int x;
-    public int y;
+    private Image image;
+    private int tileSize;
+    private int x;
+    private int y;
 
     public Sprite() {
         this(0, 0, 16);
@@ -14,6 +14,22 @@ public abstract class Sprite {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
+    }
+
+    public int getTileSize() {
+        return tileSize;
     }
 
     public void setX(int x) {
