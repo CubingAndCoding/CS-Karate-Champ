@@ -68,6 +68,25 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        updateMovement();
+        updatePlayerBounds(leftPlayer);
+        updatePlayerBounds(rightPlayer);
+
+        if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+
+        g2.setColor(Color.RED);
+        leftPlayer.draw(g2, Color.RED);
+        rightPlayer.draw(g2, Color.BLUE);
+
+        g2.dispose();
+    }
+
+    private void updateMovement() {
         if (keyHandler.wPressed) {
             leftPlayer.setY(leftPlayer.getY() - playerSpeed);
         }
@@ -101,14 +120,10 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-
-        g2.setColor(Color.RED);
-        leftPlayer.draw(g2, Color.RED);
-        rightPlayer.draw(g2, Color.BLUE);
-
-        g2.dispose();
+    private void updatePlayerBounds(Sprite player) {
+        if (player.getX() < 0) player.setX(0);
+        if (player.getX() > SCREEN_WIDTH - TILE_SIZE) player.setX(SCREEN_WIDTH - TILE_SIZE);
+        if (player.getY() < 0) player.setY(0);
+        if (player.getY() > SCREEN_HEIGHT - TILE_SIZE) player.setY(SCREEN_HEIGHT - TILE_SIZE);
     }
 }

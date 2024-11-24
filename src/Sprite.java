@@ -48,6 +48,12 @@ public abstract class Sprite {
         return y;
     }
 
+    public static boolean checkCollision(Sprite one, Sprite two) {
+        Rectangle spriteOne = new Rectangle(one.x, one.y, one.tileSize, one.tileSize);
+        Rectangle spriteTwo = new Rectangle(two.x, two.y, two.tileSize, two.tileSize);
+
+        return spriteOne.intersects(spriteTwo);
+    }
 
     public abstract void draw(Graphics2D g2, Color color);
 
