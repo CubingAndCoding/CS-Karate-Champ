@@ -17,9 +17,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Player settings
     int player1X = 100;
-    int player1Y = 100;
+    int player1Y = SCREEN_HEIGHT / 2;
     int player2X = SCREEN_WIDTH - 100 - TILE_SIZE;
-    int player2Y = SCREEN_HEIGHT - 100 - TILE_SIZE;
+    int player2Y = SCREEN_HEIGHT / 2;
     int playerSpeed = 5;
     Player leftPlayer;
     Player rightPlayer;
@@ -75,8 +75,13 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType leftPlayerAction = getLeftPlayerAction();
         MoveType rightPlayerAction = getRightPlayerAction();
 
-        System.out.println("Left Action: " + leftPlayerAction);
-        System.out.println("Right Action: " + rightPlayerAction);
+        if (leftPlayerAction == MoveType.JUMP) {
+            leftPlayer.jump();
+        }
+
+        if (rightPlayerAction == MoveType.JUMP) {
+            rightPlayer.jump();
+        }
 
         if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");
     }
@@ -93,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private MoveType getLeftPlayerAction() {
+        if (!leftPlayer.isGrounded) return MoveType.NONE;
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
@@ -107,6 +113,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private MoveType getRightPlayerAction() {
+        if (!rightPlayer.isGrounded) return MoveType.NONE;
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
@@ -121,43 +128,37 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void updateMovement() {
-        if (keyHandler.wPressed) {
-            leftPlayer.setY(leftPlayer.getY() - playerSpeed);
-        }
-
         if (keyHandler.aPressed) {
             leftPlayer.setX(leftPlayer.getX() - playerSpeed);
-        }
-
-        if (keyHandler.sPressed) {
-            leftPlayer.setY(leftPlayer.getY() + playerSpeed);
         }
 
         if (keyHandler.dPressed) {
             leftPlayer.setX(leftPlayer.getX() + playerSpeed);
         }
 
-        if (keyHandler.upPressed) {
-            rightPlayer.setY(rightPlayer.getY() - playerSpeed);
-        }
-
         if (keyHandler.leftPressed) {
             rightPlayer.setX(rightPlayer.getX() - playerSpeed);
-        }
-
-        if (keyHandler.downPressed) {
-            rightPlayer.setY(rightPlayer.getY() + playerSpeed);
         }
 
         if (keyHandler.rightPressed) {
             rightPlayer.setX(rightPlayer.getX() + playerSpeed);
         }
+
+        leftPlayer.setY(leftPlayer.getY() + leftPlayer.yvel);
+        leftPlayer.yvel += 2;
+
+        rightPlayer.setY(rightPlayer.getY() + rightPlayer.yvel);
+        rightPlayer.yvel += 2;
+
     }
 
-    private void updatePlayerBounds(Sprite player) {
+    private void updatePlayerBounds(Player player) {
         if (player.getX() < 0) player.setX(0);
         if (player.getX() > SCREEN_WIDTH - TILE_SIZE) player.setX(SCREEN_WIDTH - TILE_SIZE);
         if (player.getY() < 0) player.setY(0);
-        if (player.getY() > SCREEN_HEIGHT - TILE_SIZE) player.setY(SCREEN_HEIGHT - TILE_SIZE);
+        if (player.getY() > SCREEN_HEIGHT / 2) {
+            player.isGrounded = true;
+            player.setY(SCREEN_HEIGHT / 2);
+        } else player.isGrounded = false;
     }
 }
