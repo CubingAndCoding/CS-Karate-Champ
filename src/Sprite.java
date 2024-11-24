@@ -48,6 +48,8 @@ public abstract class Sprite {
         return y;
     }
 
-    public abstract void drawImage(Graphics2D g2);
+
+    public abstract void draw(Graphics2D g2, Color color);
+
     public abstract String toString();
 }

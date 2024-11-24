@@ -1,9 +1,14 @@
 import java.awt.*;
 
 public class Player extends Sprite {
-    @Override
-    public void drawImage(Graphics2D g2) {
+    public Player(int x, int y, int tileSize) {
+        super(x, y, tileSize);
+    }
 
+    @Override
+    public void draw(Graphics2D g2, Color color) {
+        g2.setColor(color);
+        g2.fillRect(getX(), getY(), getTileSize(), getTileSize());
     }
 
     @Override
