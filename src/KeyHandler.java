@@ -4,6 +4,8 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     public boolean wPressed, sPressed, aPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean fPressed, gPressed;
+    public boolean commaPressed, periodPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -14,35 +16,42 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+        // Left Player Keys
         if (code == KeyEvent.VK_W) {
             wPressed = true;
+        } else if (code == KeyEvent.VK_S) {
+            sPressed = true;
+        }
+
+        if (code == KeyEvent.VK_F) {
+            fPressed = true;
+        } else if (code == KeyEvent.VK_G) {
+            gPressed = true;
         }
 
         if (code == KeyEvent.VK_A) {
             aPressed = true;
-        }
-
-        if (code == KeyEvent.VK_S) {
-            sPressed = true;
-        }
-
-        if (code == KeyEvent.VK_D) {
+        } if (code == KeyEvent.VK_D) {
             dPressed = true;
         }
 
+
+        // Right Player Keys
         if (code == KeyEvent.VK_UP) {
             upPressed = true;
+        } else if (code == KeyEvent.VK_DOWN) {
+            downPressed = true;
+        }
+
+        if (code == KeyEvent.VK_COMMA) {
+            commaPressed = true;
+        } else if (code == KeyEvent.VK_PERIOD) {
+            periodPressed = true;
         }
 
         if (code == KeyEvent.VK_LEFT) {
             leftPressed = true;
-        }
-
-        if (code == KeyEvent.VK_DOWN) {
-            downPressed = true;
-        }
-
-        if (code == KeyEvent.VK_RIGHT) {
+        } if (code == KeyEvent.VK_RIGHT) {
             rightPressed = true;
         }
     }
@@ -81,6 +90,22 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_RIGHT) {
             rightPressed = false;
+        }
+
+        if (code == KeyEvent.VK_COMMA) {
+            commaPressed = false;
+        }
+
+        if (code == KeyEvent.VK_PERIOD) {
+            periodPressed = false;
+        }
+
+        if (code == KeyEvent.VK_F) {
+            fPressed = false;
+        }
+
+        if (code == KeyEvent.VK_G) {
+            gPressed = false;
         }
     }
 }

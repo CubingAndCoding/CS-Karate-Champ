@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int MAX_SCREEN_ROWS = 9;
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
-    final int FPS = 60;
+    final int FPS = 24;
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
@@ -72,6 +72,12 @@ public class GamePanel extends JPanel implements Runnable {
         updatePlayerBounds(leftPlayer);
         updatePlayerBounds(rightPlayer);
 
+        MoveType leftPlayerAction = getLeftPlayerAction();
+        MoveType rightPlayerAction = getRightPlayerAction();
+
+        System.out.println("Left Action: " + leftPlayerAction);
+        System.out.println("Right Action: " + rightPlayerAction);
+
         if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");
     }
 
@@ -84,6 +90,34 @@ public class GamePanel extends JPanel implements Runnable {
         rightPlayer.draw(g2, Color.BLUE);
 
         g2.dispose();
+    }
+
+    private MoveType getLeftPlayerAction() {
+        MoveType[][] moves = MoveTable.moveTable;
+
+        int rowIdx = 0;
+        if (keyHandler.fPressed) rowIdx = 1;
+        else if (keyHandler.gPressed) rowIdx = 2;
+
+        int colIdx = 0;
+        if (keyHandler.wPressed) colIdx = 1;
+        else if (keyHandler.sPressed) colIdx = 2;
+
+        return moves[rowIdx][colIdx];
+    }
+
+    private MoveType getRightPlayerAction() {
+        MoveType[][] moves = MoveTable.moveTable;
+
+        int rowIdx = 0;
+        if (keyHandler.commaPressed) rowIdx = 1;
+        else if (keyHandler.periodPressed) rowIdx = 2;
+
+        int colIdx = 0;
+        if (keyHandler.upPressed) colIdx = 1;
+        else if (keyHandler.downPressed) colIdx = 2;
+
+        return moves[rowIdx][colIdx];
     }
 
     private void updateMovement() {
