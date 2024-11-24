@@ -13,5 +13,7 @@ public class KarateChampRunner {
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        gamePanel.startGameThread();
     }
 }
