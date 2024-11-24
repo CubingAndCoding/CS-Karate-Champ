@@ -6,10 +6,6 @@ public abstract class Sprite {
     private int x;
     private int y;
 
-    public Sprite() {
-        this(0, 0, 16);
-    }
-
     public Sprite(int x, int y, int tileSize) {
         this.x = x;
         this.y = y;
