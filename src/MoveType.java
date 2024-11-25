@@ -1,9 +1,9 @@
 public enum MoveType {
     NONE,
-    FRONT_KICK,
-    BACK_KICK,
-    PUNCH,
-    ROLL,
-    JUMP,
-    BLOCK
+    FRONT_KICK, // G
+    BACK_KICK,  // G S
+    PUNCH,      // F
+    ROLL,       // F S
+    JUMP,       // F W
+    BLOCK       // G W
 }

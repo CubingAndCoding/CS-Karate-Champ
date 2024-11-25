@@ -39,8 +39,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        leftPlayer = new Player(player1X, player1Y, TILE_SIZE);
-        rightPlayer = new Player(player2X, player2Y, TILE_SIZE);
+        leftPlayer = new Player(player1X, player1Y, TILE_SIZE * 3 / 4, TILE_SIZE);
+        rightPlayer = new Player(player2X, player2Y, TILE_SIZE * 3 / 4, TILE_SIZE);
 
         double drawInterval = 1_000_000_000./FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
@@ -75,12 +75,34 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType leftPlayerAction = getLeftPlayerAction();
         MoveType rightPlayerAction = getRightPlayerAction();
 
-        if (leftPlayerAction == MoveType.JUMP) {
-            leftPlayer.jump();
+        switch (leftPlayerAction) {
+//            case FRONT_KICK ->
+//                leftPlayer.frontKick();
+//            case BACK_KICK ->
+//                leftPlayer.backKick();
+//            case PUNCH ->
+//                leftPlayer.punch();
+//            case ROLL ->
+//                leftPlayer.roll();
+            case JUMP ->
+                leftPlayer.jump();
+//            case BLOCK ->
+//                leftPlayer.block();
         }
 
-        if (rightPlayerAction == MoveType.JUMP) {
-            rightPlayer.jump();
+        switch (rightPlayerAction) {
+//            case FRONT_KICK ->
+//                rightPlayer.frontKick();
+//            case BACK_KICK ->
+//                rightPlayer.backKick();
+//            case PUNCH ->
+//                rightPlayer.punch();
+//            case ROLL ->
+//                rightPlayer.roll();
+            case JUMP ->
+                    rightPlayer.jump();
+//            case BLOCK ->
+//                rightPlayer.block();
         }
 
         if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");

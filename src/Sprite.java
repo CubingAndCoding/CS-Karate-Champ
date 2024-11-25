@@ -2,14 +2,15 @@ import java.awt.*;
 
 public abstract class Sprite {
     private Image image;
-    private int tileSize;
+    private int width, height;
     private int x;
     private int y;
 
-    public Sprite(int x, int y, int tileSize) {
+    public Sprite(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
-        this.tileSize = tileSize;
+        this.width = width;
+        this.height = height;
     }
 
     public void setImage(Image image) {
@@ -20,12 +21,20 @@ public abstract class Sprite {
         return image;
     }
 
-    public void setTileSize(int tileSize) {
-        this.tileSize = tileSize;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public int getTileSize() {
-        return tileSize;
+    public int getWidth() {
+        return width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void setX(int x) {
@@ -45,8 +54,8 @@ public abstract class Sprite {
     }
 
     public static boolean checkCollision(Sprite one, Sprite two) {
-        Rectangle spriteOne = new Rectangle(one.x, one.y, one.tileSize, one.tileSize);
-        Rectangle spriteTwo = new Rectangle(two.x, two.y, two.tileSize, two.tileSize);
+        Rectangle spriteOne = new Rectangle(one.x, one.y, one.width, one.height);
+        Rectangle spriteTwo = new Rectangle(two.x, two.y, two.width, two.height);
 
         return spriteOne.intersects(spriteTwo);
     }

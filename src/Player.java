@@ -5,8 +5,8 @@ public class Player extends Sprite {
 
     int yvel = 0;
 
-    public Player(int x, int y, int tileSize) {
-        super(x, y, tileSize);
+    public Player(int x, int y, int width, int height) {
+        super(x, y, width, height);
         isGrounded = true;
     }
 
@@ -18,7 +18,7 @@ public class Player extends Sprite {
     @Override
     public void draw(Graphics2D g2, Color color) {
         g2.setColor(color);
-        g2.fillRect(getX(), getY(), getTileSize(), getTileSize());
+        g2.fillRect(getX(), getY(), getWidth(), getHeight());
     }
 
     @Override
