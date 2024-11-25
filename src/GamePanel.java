@@ -75,6 +75,10 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType leftPlayerAction = getLeftPlayerAction();
         MoveType rightPlayerAction = getRightPlayerAction();
 
+        if (rightPlayerAction != MoveType.NONE) {
+            System.out.println(rightPlayerAction);
+        }
+
         switch (leftPlayerAction) {
 //            case FRONT_KICK ->
 //                leftPlayer.frontKick();
@@ -139,8 +143,8 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
-        if (keyHandler.commaPressed) rowIdx = 1;
-        else if (keyHandler.periodPressed) rowIdx = 2;
+        if (keyHandler.periodPressed) rowIdx = 1;
+        else if (keyHandler.slashPressed) rowIdx = 2;
 
         int colIdx = 0;
         if (keyHandler.upPressed) colIdx = 1;
