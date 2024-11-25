@@ -13,7 +13,7 @@ public class MoveTable {
         moveTable[0][2] = MoveType.NONE;
         moveTable[1][0] = MoveType.PUNCH;
         moveTable[1][1] = MoveType.JUMP;
-        moveTable[1][2] = MoveType.ROLL;
+        moveTable[1][2] = MoveType.DUCK;
         moveTable[2][0] = MoveType.BLOCK;
         moveTable[2][1] = MoveType.FRONT_KICK;
         moveTable[2][2] = MoveType.BACK_KICK;

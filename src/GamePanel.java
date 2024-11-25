@@ -79,34 +79,38 @@ public class GamePanel extends JPanel implements Runnable {
             System.out.println(rightPlayerAction);
         }
 
-        switch (leftPlayerAction) {
-//            case FRONT_KICK ->
-//                leftPlayer.frontKick();
-//            case BACK_KICK ->
-//                leftPlayer.backKick();
-//            case PUNCH ->
-//                leftPlayer.punch();
-//            case ROLL ->
-//                leftPlayer.roll();
-            case JUMP ->
-                leftPlayer.jump();
-//            case BLOCK ->
-//                leftPlayer.block();
+        if (leftPlayer.freezeFrames == 0) {
+            if (leftPlayer.action == MoveType.DUCK) {
+                leftPlayer.resetDuck();
+            } leftPlayer.action = MoveType.NONE;
+
+            switch (leftPlayerAction) {
+                case FRONT_KICK -> leftPlayer.frontKick();
+                case BACK_KICK -> leftPlayer.backKick();
+                case PUNCH -> leftPlayer.punch();
+                case DUCK -> leftPlayer.duck();
+                case JUMP -> leftPlayer.jump();
+                case BLOCK -> leftPlayer.block();
+            }
+        } else {
+            leftPlayer.freezeFrames--;
         }
 
-        switch (rightPlayerAction) {
-//            case FRONT_KICK ->
-//                rightPlayer.frontKick();
-//            case BACK_KICK ->
-//                rightPlayer.backKick();
-//            case PUNCH ->
-//                rightPlayer.punch();
-//            case ROLL ->
-//                rightPlayer.roll();
-            case JUMP ->
-                    rightPlayer.jump();
-//            case BLOCK ->
-//                rightPlayer.block();
+        if (rightPlayer.freezeFrames == 0) {
+            if (rightPlayer.action == MoveType.DUCK) {
+                rightPlayer.resetDuck();
+            } rightPlayer.action = MoveType.NONE;
+
+            switch (rightPlayerAction) {
+                case FRONT_KICK -> rightPlayer.frontKick();
+                case BACK_KICK -> rightPlayer.backKick();
+                case PUNCH -> rightPlayer.punch();
+                case DUCK -> rightPlayer.duck();
+                case JUMP -> rightPlayer.jump();
+                case BLOCK -> rightPlayer.block();
+            }
+        } else {
+            rightPlayer.freezeFrames--;
         }
 
         if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");
@@ -180,11 +184,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void updatePlayerBounds(Player player) {
         if (player.getX() < 0) player.setX(0);
-        if (player.getX() > SCREEN_WIDTH - TILE_SIZE) player.setX(SCREEN_WIDTH - TILE_SIZE);
+        if (player.getX() > SCREEN_WIDTH - player.getWidth()) player.setX(SCREEN_WIDTH - player.getWidth());
         if (player.getY() < 0) player.setY(0);
-        if (player.getY() > SCREEN_HEIGHT / 2) {
+        if (player.getY()> SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
             player.isGrounded = true;
-            player.setY(SCREEN_HEIGHT / 2);
+            player.setY(SCREEN_HEIGHT * 3 / 4 - player.getHeight());
         } else player.isGrounded = false;
     }
 }
