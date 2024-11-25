@@ -32,7 +32,7 @@ public class Player extends Sprite {
     public void duck() {
         setHeight(getHeight() >> 1);
         setY(getY() + getHeight());
-        freezeFrames = 10;
+        freezeFrames = 0;
         action = MoveType.DUCK;
     }
 
@@ -43,7 +43,7 @@ public class Player extends Sprite {
     }
 
     public void block() {
-        freezeFrames = 10;
+        freezeFrames = 0;
         action = MoveType.BLOCK;
     }
 
