@@ -5,7 +5,7 @@ public class KeyHandler implements KeyListener {
     public boolean wPressed, sPressed, aPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean fPressed, gPressed;
-    public boolean commaPressed, periodPressed;
+    public boolean periodPressed, slashPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -43,10 +43,10 @@ public class KeyHandler implements KeyListener {
             downPressed = true;
         }
 
-        if (code == KeyEvent.VK_COMMA) {
-            commaPressed = true;
-        } else if (code == KeyEvent.VK_PERIOD) {
+        if (code == KeyEvent.VK_PERIOD) {
             periodPressed = true;
+        } else if (code == KeyEvent.VK_SLASH) {
+            slashPressed = true;
         }
 
         if (code == KeyEvent.VK_LEFT) {
@@ -92,12 +92,12 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
 
-        if (code == KeyEvent.VK_COMMA) {
-            commaPressed = false;
-        }
-
         if (code == KeyEvent.VK_PERIOD) {
             periodPressed = false;
+        }
+
+        if (code == KeyEvent.VK_SLASH) {
+            slashPressed = false;
         }
 
         if (code == KeyEvent.VK_F) {
