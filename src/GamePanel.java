@@ -16,10 +16,10 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     // Player settings
-    int player1X = 100;
-    int player1Y = SCREEN_HEIGHT / 2;
-    int player2X = SCREEN_WIDTH - 100 - TILE_SIZE;
-    int player2Y = SCREEN_HEIGHT / 2;
+    int player1X = SCREEN_WIDTH / 4;
+    int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
+    int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE * 3 / 4;
+    int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
     int playerSpeed = 5;
     Player leftPlayer;
     Player rightPlayer;
@@ -75,11 +75,9 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType leftPlayerAction = getLeftPlayerAction();
         MoveType rightPlayerAction = getRightPlayerAction();
 
-        if (rightPlayerAction != MoveType.NONE) {
-            System.out.println(rightPlayerAction);
-        }
-
         if (leftPlayer.freezeFrames == 0) {
+            System.out.println("\nLeft Player:");
+            System.out.println(leftPlayer);
             if (leftPlayer.action == MoveType.DUCK) {
                 leftPlayer.resetDuck();
             } leftPlayer.action = MoveType.NONE;
@@ -97,6 +95,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (rightPlayer.freezeFrames == 0) {
+            System.out.println("\nRight Player");
+            System.out.println(rightPlayer);
+
             if (rightPlayer.action == MoveType.DUCK) {
                 rightPlayer.resetDuck();
             } rightPlayer.action = MoveType.NONE;
@@ -186,7 +187,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (player.getX() < 0) player.setX(0);
         if (player.getX() > SCREEN_WIDTH - player.getWidth()) player.setX(SCREEN_WIDTH - player.getWidth());
         if (player.getY() < 0) player.setY(0);
-        if (player.getY()> SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
+        if (player.getY() >= SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
             player.isGrounded = true;
             player.setY(SCREEN_HEIGHT * 3 / 4 - player.getHeight());
         } else player.isGrounded = false;
