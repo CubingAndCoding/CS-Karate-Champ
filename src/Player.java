@@ -60,6 +60,6 @@ public class Player extends Sprite {
 
     @Override
     public String toString() {
-        return "";
+        return "Player Action: " + action + "\nPlayer Grounded: " + isGrounded;
     }
 }

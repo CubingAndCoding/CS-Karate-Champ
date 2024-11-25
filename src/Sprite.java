@@ -61,6 +61,4 @@ public abstract class Sprite {
     }
 
     public abstract void draw(Graphics2D g2, Color color);
-
-    public abstract String toString();
 }
