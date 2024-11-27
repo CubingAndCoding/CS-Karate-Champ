@@ -76,8 +76,6 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType rightPlayerAction = getRightPlayerAction();
 
         if (leftPlayer.freezeFrames == 0) {
-            System.out.println("\nLeft Player:");
-            System.out.println(leftPlayer);
             if (leftPlayer.action == MoveType.DUCK) {
                 leftPlayer.resetDuck();
             } leftPlayer.action = MoveType.NONE;
@@ -95,9 +93,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (rightPlayer.freezeFrames == 0) {
-            System.out.println("\nRight Player");
-            System.out.println(rightPlayer);
-
             if (rightPlayer.action == MoveType.DUCK) {
                 rightPlayer.resetDuck();
             } rightPlayer.action = MoveType.NONE;
@@ -114,7 +109,12 @@ public class GamePanel extends JPanel implements Runnable {
             rightPlayer.freezeFrames--;
         }
 
-        if (Sprite.checkCollision(leftPlayer, rightPlayer)) System.out.println("COLLISION DETECTED");
+        cont:
+            if (Sprite.checkCollision(leftPlayer, rightPlayer)) {
+                char winner = getWinner();
+                if (winner == 'T') break cont;
+                System.out.println(winner);
+            }
     }
 
     public void paintComponent(Graphics g) {
@@ -128,6 +128,22 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    public char getWinner() {
+        if (leftPlayer.action == MoveType.BLOCK) return 'T';
+        if (rightPlayer.action == MoveType.BLOCK) return 'T';
+
+        if (leftPlayer.action == MoveType.BACK_KICK && rightPlayer.action != MoveType.BACK_KICK) return 'L';
+        if (rightPlayer.action == MoveType.BACK_KICK && leftPlayer.action != MoveType.BACK_KICK) return 'R';
+
+        if (leftPlayer.action == MoveType.FRONT_KICK && rightPlayer.action != MoveType.FRONT_KICK) return 'L';
+        if (rightPlayer.action == MoveType.FRONT_KICK && leftPlayer.action != MoveType.FRONT_KICK) return 'R';
+
+        if (leftPlayer.action == MoveType.PUNCH && rightPlayer.action != MoveType.PUNCH) return 'L';
+        if (rightPlayer.action == MoveType.PUNCH && leftPlayer.action != MoveType.PUNCH) return 'R';
+
+        return 'T';
+    }
+
     private MoveType getLeftPlayerAction() {
         if (!leftPlayer.isGrounded) return MoveType.NONE;
         MoveType[][] moves = MoveTable.moveTable;
@@ -135,6 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
         int rowIdx = 0;
         if (keyHandler.fPressed) rowIdx = 1;
         else if (keyHandler.gPressed) rowIdx = 2;
+        else if (keyHandler.hPressed) rowIdx = 3;
 
         int colIdx = 0;
         if (keyHandler.wPressed) colIdx = 1;
@@ -148,8 +165,9 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
-        if (keyHandler.periodPressed) rowIdx = 1;
-        else if (keyHandler.slashPressed) rowIdx = 2;
+        if (keyHandler.commaPressed) rowIdx = 1;
+        else if (keyHandler.periodPressed) rowIdx = 2;
+        else if (keyHandler.slashPressed) rowIdx = 3;
 
         int colIdx = 0;
         if (keyHandler.upPressed) colIdx = 1;

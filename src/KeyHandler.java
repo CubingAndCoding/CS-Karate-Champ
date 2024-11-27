@@ -4,8 +4,8 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener {
     public boolean wPressed, sPressed, aPressed, dPressed;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
-    public boolean fPressed, gPressed;
-    public boolean periodPressed, slashPressed;
+    public boolean fPressed, gPressed, hPressed;
+    public boolean commaPressed, periodPressed, slashPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -27,6 +27,8 @@ public class KeyHandler implements KeyListener {
             fPressed = true;
         } else if (code == KeyEvent.VK_G) {
             gPressed = true;
+        } else if (code == KeyEvent.VK_H) {
+            hPressed = true;
         }
 
         if (code == KeyEvent.VK_A) {
@@ -43,7 +45,9 @@ public class KeyHandler implements KeyListener {
             downPressed = true;
         }
 
-        if (code == KeyEvent.VK_PERIOD) {
+        if (code == KeyEvent.VK_COMMA) {
+            commaPressed = true;
+        } if (code == KeyEvent.VK_PERIOD) {
             periodPressed = true;
         } else if (code == KeyEvent.VK_SLASH) {
             slashPressed = true;
@@ -92,6 +96,10 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
         }
 
+        if (code == KeyEvent.VK_COMMA) {
+            commaPressed = false;
+        }
+
         if (code == KeyEvent.VK_PERIOD) {
             periodPressed = false;
         }
@@ -106,6 +114,10 @@ public class KeyHandler implements KeyListener {
 
         if (code == KeyEvent.VK_G) {
             gPressed = false;
+        }
+
+        if (code == KeyEvent.VK_H) {
+            hPressed = false;
         }
     }
 }
