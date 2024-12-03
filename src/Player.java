@@ -7,11 +7,29 @@ public class Player extends Sprite {
 
     int yvel = 0;
 
+    Image[] jumpFrames;
+    Image[] duckFrames;
+    Image[] punchFrames;
+    Image[] blockFrames;
+    Image[] frontKickFrames;
+    Image[] backKickFrames;
+
+    Image[] walkFrames;
+    Image[] idleFrames;
+
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height);
         isGrounded = true;
         freezeFrames = 0;
         action = MoveType.NONE;
+
+        setupImages();
+    }
+
+    public void setupImages() {
+        /*
+        image = ImageIO.read(getClass().getResourceAsStream("/leftPlayer/P1_*_*.png"));
+         */
     }
 
     public void frontKick() {
@@ -60,6 +78,7 @@ public class Player extends Sprite {
 
     @Override
     public String toString() {
-        return "Player Action: " + action + "\nPlayer Grounded: " + isGrounded;
+        return "Player Action: " + action + "\n" +
+                "Player Grounded: " + isGrounded;
     }
 }

@@ -1,12 +1,14 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
     final int ORIGINAL_TILE_SIZE = 16;
     final int SCALE = 5;
     final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
-    final int MAX_SCREEN_COLS = 16;
+    final int MAX_SCREEN_COLS = 9;
     final int MAX_SCREEN_ROWS = 9;
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
@@ -23,6 +25,8 @@ public class GamePanel extends JPanel implements Runnable {
     int playerSpeed = 5;
     Player leftPlayer;
     Player rightPlayer;
+    
+    Image backgroundImage;
 
     public GamePanel() {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -33,8 +37,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
+        setupBackgroundImage();
         gameThread = new Thread(this);
         gameThread.start();
+    }
+    
+    public void setupBackgroundImage() {
+        try {
+            backgroundImage = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/background/background.png")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -121,9 +134,14 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        g2.drawImage(backgroundImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+
         g2.setColor(Color.RED);
-        leftPlayer.draw(g2, Color.RED);
-        rightPlayer.draw(g2, Color.BLUE);
+        if (leftPlayer != null)
+            leftPlayer.draw(g2, Color.RED);
+
+        if (rightPlayer != null)
+            rightPlayer.draw(g2, Color.BLUE);
 
         g2.dispose();
     }
