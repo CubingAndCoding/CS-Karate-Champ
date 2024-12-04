@@ -12,7 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int MAX_SCREEN_ROWS = 9;
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
-    final int FPS = 24;
+    final int FPS = 12;
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
     int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
     int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE * 3 / 4;
     int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
-    int playerSpeed = 5;
+    int playerSpeed = 4;
     Player leftPlayer;
     Player rightPlayer;
     
@@ -91,14 +91,20 @@ public class GamePanel extends JPanel implements Runnable {
         if (leftPlayer.freezeFrames == 0) {
             if (leftPlayer.action == MoveType.DUCK) {
                 leftPlayer.resetDuck();
-            } leftPlayer.action = MoveType.NONE;
+            }
+
+            if (!keyHandler.aPressed && !keyHandler.dPressed)
+                leftPlayer.action = MoveType.NONE;
 
             switch (leftPlayerAction) {
                 case FRONT_KICK -> leftPlayer.frontKick();
                 case BACK_KICK -> leftPlayer.backKick();
                 case PUNCH -> leftPlayer.punch();
                 case DUCK -> leftPlayer.duck();
-                case JUMP -> leftPlayer.jump();
+                case JUMP -> {
+                    if (!leftPlayer.isGrounded) break;
+                    leftPlayer.jump();
+                }
                 case BLOCK -> leftPlayer.block();
             }
         } else {
@@ -108,14 +114,20 @@ public class GamePanel extends JPanel implements Runnable {
         if (rightPlayer.freezeFrames == 0) {
             if (rightPlayer.action == MoveType.DUCK) {
                 rightPlayer.resetDuck();
-            } rightPlayer.action = MoveType.NONE;
+            }
+
+            if (!keyHandler.leftPressed && !keyHandler.rightPressed)
+                rightPlayer.action = MoveType.NONE;
 
             switch (rightPlayerAction) {
                 case FRONT_KICK -> rightPlayer.frontKick();
                 case BACK_KICK -> rightPlayer.backKick();
                 case PUNCH -> rightPlayer.punch();
                 case DUCK -> rightPlayer.duck();
-                case JUMP -> rightPlayer.jump();
+                case JUMP -> {
+                    if (!rightPlayer.isGrounded) break;
+                    rightPlayer.jump();
+                }
                 case BLOCK -> rightPlayer.block();
             }
         } else {
@@ -137,9 +149,14 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(backgroundImage, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 
         g2.setColor(Color.RED);
+
+        if (leftPlayer == null || rightPlayer == null) return;
+
+        if (!leftPlayer.isGrounded) leftPlayer.action = MoveType.JUMP;
         if (leftPlayer != null)
             leftPlayer.draw(g2, Color.RED);
 
+        if (!rightPlayer.isGrounded) rightPlayer.action = MoveType.JUMP;
         if (rightPlayer != null)
             rightPlayer.draw(g2, Color.BLUE);
 
@@ -163,7 +180,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private MoveType getLeftPlayerAction() {
-        if (!leftPlayer.isGrounded) return MoveType.NONE;
+        if (!leftPlayer.isGrounded) return MoveType.JUMP;
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
@@ -179,7 +196,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private MoveType getRightPlayerAction() {
-        if (!rightPlayer.isGrounded) return MoveType.NONE;
+        if (!rightPlayer.isGrounded) return MoveType.JUMP;
         MoveType[][] moves = MoveTable.moveTable;
 
         int rowIdx = 0;
@@ -196,13 +213,16 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void updateMovement() {
         if (keyHandler.aPressed) {
-            leftPlayer.action = MoveType.WALK;
             leftPlayer.setX(leftPlayer.getX() - playerSpeed);
         }
 
         if (keyHandler.dPressed) {
-            leftPlayer.action = MoveType.WALK;
             leftPlayer.setX(leftPlayer.getX() + playerSpeed);
+        }
+
+        if (keyHandler.aPressed ^ keyHandler.dPressed) {
+            leftPlayer.action = MoveType.WALK;
+            leftPlayer.frameTickRate = 4;
         }
 
         if (keyHandler.leftPressed) {
@@ -213,6 +233,11 @@ public class GamePanel extends JPanel implements Runnable {
         if (keyHandler.rightPressed) {
             rightPlayer.action = MoveType.WALK;
             rightPlayer.setX(rightPlayer.getX() + playerSpeed);
+        }
+
+        if (keyHandler.leftPressed ^ keyHandler.rightPressed) {
+            rightPlayer.action = MoveType.WALK;
+            rightPlayer.frameTickRate = 4;
         }
 
         leftPlayer.setY(leftPlayer.getY() + leftPlayer.yvel);

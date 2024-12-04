@@ -6,6 +6,7 @@ import java.util.Objects;
 public class Player extends Sprite {
     public boolean isGrounded;
     public int frame;
+    public int frameTickRate;
     public int freezeFrames;
     public MoveType action;
 
@@ -45,22 +46,33 @@ public class Player extends Sprite {
             for (int i = 0; i < walkFrames.length; i++) {
                 walkFrames[i] = returnImage("/left player/walk/walk_" + i + ".png");
             }
+
+            jumpFrames = new Image[1];
+            for (int i = 0; i < jumpFrames.length; i++) {
+                jumpFrames[i] = returnImage("left player/jump/jump_" + i + ".png");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void frontKick() {
+        frameTickRate = 4;
+        freezeFrames = 4 * punchFrames.length;
         freezeFrames = 10;
         action = MoveType.FRONT_KICK;
     }
 
     public void backKick() {
+        frameTickRate = 4;
+        freezeFrames = 4 * punchFrames.length;
         freezeFrames = 10;
         action = MoveType.BACK_KICK;
     }
 
     public void punch() {
+        frameTickRate = 4;
+        freezeFrames = 4 * punchFrames.length;
         freezeFrames = 10;
         action = MoveType.PUNCH;
     }
@@ -68,17 +80,20 @@ public class Player extends Sprite {
     public void duck() {
         setHeight(getHeight() >> 1);
         setY(getY() + getHeight());
+        frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.DUCK;
     }
 
     public void jump() {
+        frameTickRate = 1;
         isGrounded = false;
         yvel = -20;
         action = MoveType.JUMP;
     }
 
     public void block() {
+        frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.BLOCK;
     }
@@ -93,22 +108,26 @@ public class Player extends Sprite {
         g2.setColor(color);
         g2.drawRect(getX(), getY(), getWidth(), getHeight());
 
+        if (frameTickRate == 0) frameTickRate = 1;
+
         switch (action) {
             case MoveType.NONE -> {
-                frame %= idleFrames.length;
-                g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+                int curFrame = frame / frameTickRate % idleFrames.length;
+                g2.drawImage(idleFrames[curFrame], getX(), getY(), getWidth(), getHeight(), null);
             }
 
             case MoveType.WALK -> {
-                frame %= walkFrames.length;
-                g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+                int curFrame = frame / frameTickRate % walkFrames.length;
+                g2.drawImage(walkFrames[curFrame], getX(), getY(), getWidth(), getHeight(), null);
             }
 
             case MoveType.JUMP -> {
-                frame%= jumpFrames.length;
+                frame %= jumpFrames.length;
                 g2.drawImage(jumpFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
             }
         }
+
+        frame++;
     }
 
     @Override
