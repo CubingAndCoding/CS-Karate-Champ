@@ -196,18 +196,22 @@ public class GamePanel extends JPanel implements Runnable {
 
     private void updateMovement() {
         if (keyHandler.aPressed) {
+            leftPlayer.action = MoveType.WALK;
             leftPlayer.setX(leftPlayer.getX() - playerSpeed);
         }
 
         if (keyHandler.dPressed) {
+            leftPlayer.action = MoveType.WALK;
             leftPlayer.setX(leftPlayer.getX() + playerSpeed);
         }
 
         if (keyHandler.leftPressed) {
+            rightPlayer.action = MoveType.WALK;
             rightPlayer.setX(rightPlayer.getX() - playerSpeed);
         }
 
         if (keyHandler.rightPressed) {
+            rightPlayer.action = MoveType.WALK;
             rightPlayer.setX(rightPlayer.getX() + playerSpeed);
         }
 
