@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Objects;
 
 public class Player extends Sprite {
@@ -29,11 +30,20 @@ public class Player extends Sprite {
         setupImages();
     }
 
+    public Image returnImage(String path) throws IOException {
+        return ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(path)));
+    }
+
     public void setupImages() {
         try {
             idleFrames = new Image[1];
             for (int i = 0; i < idleFrames.length; i++) {
-                idleFrames[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/left player/idle/idle_" + i + ".png")));
+                idleFrames[i] = returnImage("/left player/idle/idle_" + i + ".png");
+            }
+
+            walkFrames = new Image[2];
+            for (int i = 0; i < walkFrames.length; i++) {
+                walkFrames[i] = returnImage("/left player/walk/walk_" + i + ".png");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,9 +93,21 @@ public class Player extends Sprite {
         g2.setColor(color);
         g2.drawRect(getX(), getY(), getWidth(), getHeight());
 
-        if (action == MoveType.NONE) {
-            frame %= idleFrames.length;
-            g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+        switch (action) {
+            case MoveType.NONE -> {
+                frame %= idleFrames.length;
+                g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+            }
+
+            case MoveType.WALK -> {
+                frame %= walkFrames.length;
+                g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+            }
+
+            case MoveType.JUMP -> {
+                frame %= jumpFrames.length;
+                g2.drawImage(jumpFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+            }
         }
     }
 
