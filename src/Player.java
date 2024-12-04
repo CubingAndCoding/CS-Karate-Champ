@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.util.Objects;
 
 public class Player extends Sprite {
     public boolean isGrounded;
+    public int frame;
     public int freezeFrames;
     public MoveType action;
 
@@ -27,9 +30,14 @@ public class Player extends Sprite {
     }
 
     public void setupImages() {
-        /*
-        image = ImageIO.read(getClass().getResourceAsStream("/leftPlayer/P1_*_*.png"));
-         */
+        try {
+            idleFrames = new Image[1];
+            for (int i = 0; i < idleFrames.length; i++) {
+                idleFrames[i] = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/left player/idle/idle_" + i + ".png")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void frontKick() {
@@ -73,7 +81,12 @@ public class Player extends Sprite {
     @Override
     public void draw(Graphics2D g2, Color color) {
         g2.setColor(color);
-        g2.fillRect(getX(), getY(), getWidth(), getHeight());
+        g2.drawRect(getX(), getY(), getWidth(), getHeight());
+
+        if (action == MoveType.NONE) {
+            frame %= idleFrames.length;
+            g2.drawImage(idleFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+        }
     }
 
     @Override
