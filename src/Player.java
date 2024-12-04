@@ -105,7 +105,7 @@ public class Player extends Sprite {
             }
 
             case MoveType.JUMP -> {
-                frame %= jumpFrames.length;
+                frame%= jumpFrames.length;
                 g2.drawImage(jumpFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
             }
         }
