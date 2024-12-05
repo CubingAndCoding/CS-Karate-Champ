@@ -88,6 +88,8 @@ public class GamePanel extends JPanel implements Runnable {
         MoveType leftPlayerAction = getLeftPlayerAction();
         MoveType rightPlayerAction = getRightPlayerAction();
 
+        rightPlayer.imagex = rightPlayer.getX() - rightPlayer.getWidth();
+
         if (leftPlayer.freezeFrames == 0) {
             if (leftPlayer.action == MoveType.DUCK) {
                 leftPlayer.resetDuck();
