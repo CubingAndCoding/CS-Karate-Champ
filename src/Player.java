@@ -66,6 +66,11 @@ public class Player extends Sprite {
             for (int i = 0; i < jumpFrames.length; i++) {
                 jumpFrames[i] = returnImage("/"+ side+ " player/jump/jump_" + i + ".png");
             }
+
+            duckFrames = new Image[1];
+            for (int i = 0; i < duckFrames.length; i++) {
+                duckFrames[i]  =returnImage("/"+ side+ " player/duck/duck_"+i+ ".png");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,6 +145,11 @@ public class Player extends Sprite {
             case MoveType.JUMP -> {
                 frame %= jumpFrames.length;
                 g2.drawImage(jumpFrames[frame], imagex, imagey, imageWidth, imageHeight, null);
+            }
+
+            case MoveType.DUCK -> {
+                frame %= duckFrames.length;
+                g2.drawImage(duckFrames[frame], imagex, imagey-52, imageWidth, imageHeight, null);
             }
         }
 
