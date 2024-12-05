@@ -91,10 +91,6 @@ public class GamePanel extends JPanel implements Runnable {
         rightPlayer.imagex = rightPlayer.getX() - rightPlayer.getWidth();
 
         if (leftPlayer.freezeFrames == 0) {
-            if (leftPlayer.action == MoveType.DUCK) {
-                leftPlayer.resetDuck();
-            }
-
             if (!keyHandler.aPressed && !keyHandler.dPressed) {
                 leftPlayer.isMoving = false;
             }
@@ -116,10 +112,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (rightPlayer.freezeFrames == 0) {
-            if (rightPlayer.action == MoveType.DUCK) {
-                rightPlayer.resetDuck();
-            }
-
             if (!keyHandler.leftPressed && !keyHandler.rightPressed)
                 rightPlayer.isMoving = false;
             rightPlayer.action = MoveType.NONE;

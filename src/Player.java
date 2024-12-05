@@ -93,8 +93,6 @@ public class Player extends Sprite {
     }
 
     public void duck() {
-        setHeight(getHeight() >> 1);
-        setY(getY() + getHeight());
         frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.DUCK;
@@ -111,11 +109,6 @@ public class Player extends Sprite {
         frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.BLOCK;
-    }
-
-    public void resetDuck() {
-        setY(getY() - getHeight());
-        setHeight(getHeight() << 1);
     }
 
     @Override
