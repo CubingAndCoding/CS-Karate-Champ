@@ -64,7 +64,7 @@ public class Player extends Sprite {
 
             jumpFrames = new Image[1];
             for (int i = 0; i < jumpFrames.length; i++) {
-                jumpFrames[i] = returnImage("left player/jump/jump_" + i + ".png");
+                jumpFrames[i] = returnImage("/"+ side+ " player/jump/jump_" + i + ".png");
             }
         } catch (Exception e) {
             e.printStackTrace();
