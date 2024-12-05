@@ -6,10 +6,10 @@ import java.util.Objects;
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
     final int ORIGINAL_TILE_SIZE = 16;
-    final int SCALE = 5;
+    final int SCALE = 7;
     final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
-    final int MAX_SCREEN_COLS = 9;
-    final int MAX_SCREEN_ROWS = 9;
+    final int MAX_SCREEN_COLS = 6;
+    final int MAX_SCREEN_ROWS = 6;
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
     final int FPS = 12;
@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements Runnable {
     // Player settings
     int player1X = SCREEN_WIDTH / 4;
     int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
-    int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE * 3 / 4;
+    int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE;
     int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
     int playerSpeed = 4;
     Player leftPlayer;
@@ -52,8 +52,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        leftPlayer = new Player(player1X, player1Y, TILE_SIZE * 3 / 4, TILE_SIZE);
-        rightPlayer = new Player(player2X, player2Y, TILE_SIZE * 3 / 4, TILE_SIZE);
+        leftPlayer = new Player(player1X, player1Y, TILE_SIZE / 2, TILE_SIZE, player1X, player1Y, TILE_SIZE, TILE_SIZE);
+        rightPlayer = new Player(player2X, player2Y, TILE_SIZE / 2, TILE_SIZE, player2X, player2Y, TILE_SIZE, TILE_SIZE);
 
         double drawInterval = 1_000_000_000./FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
@@ -93,8 +93,10 @@ public class GamePanel extends JPanel implements Runnable {
                 leftPlayer.resetDuck();
             }
 
-            if (!keyHandler.aPressed && !keyHandler.dPressed)
-                leftPlayer.action = MoveType.NONE;
+            if (!keyHandler.aPressed && !keyHandler.dPressed) {
+                leftPlayer.isMoving = false;
+            }
+            leftPlayer.action = MoveType.NONE;
 
             switch (leftPlayerAction) {
                 case FRONT_KICK -> leftPlayer.frontKick();
@@ -117,7 +119,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (!keyHandler.leftPressed && !keyHandler.rightPressed)
-                rightPlayer.action = MoveType.NONE;
+                rightPlayer.isMoving = false;
+            rightPlayer.action = MoveType.NONE;
 
             switch (rightPlayerAction) {
                 case FRONT_KICK -> rightPlayer.frontKick();
@@ -153,12 +156,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (leftPlayer == null || rightPlayer == null) return;
 
         if (!leftPlayer.isGrounded) leftPlayer.action = MoveType.JUMP;
-        if (leftPlayer != null)
-            leftPlayer.draw(g2, Color.RED);
+        leftPlayer.draw(g2, Color.RED);
 
         if (!rightPlayer.isGrounded) rightPlayer.action = MoveType.JUMP;
-        if (rightPlayer != null)
-            rightPlayer.draw(g2, Color.BLUE);
+        rightPlayer.draw(g2, Color.BLUE);
 
         g2.dispose();
     }
@@ -214,47 +215,65 @@ public class GamePanel extends JPanel implements Runnable {
     private void updateMovement() {
         if (keyHandler.aPressed) {
             leftPlayer.setX(leftPlayer.getX() - playerSpeed);
+            leftPlayer.imagex -= playerSpeed;
         }
 
         if (keyHandler.dPressed) {
             leftPlayer.setX(leftPlayer.getX() + playerSpeed);
+            leftPlayer.imagex += playerSpeed;
         }
 
         if (keyHandler.aPressed ^ keyHandler.dPressed) {
-            leftPlayer.action = MoveType.WALK;
+            leftPlayer.isMoving = true;
             leftPlayer.frameTickRate = 4;
+        } else {
+            leftPlayer.isMoving = false;
         }
 
         if (keyHandler.leftPressed) {
-            rightPlayer.action = MoveType.WALK;
             rightPlayer.setX(rightPlayer.getX() - playerSpeed);
+            rightPlayer.imagex -= playerSpeed;
         }
 
         if (keyHandler.rightPressed) {
-            rightPlayer.action = MoveType.WALK;
             rightPlayer.setX(rightPlayer.getX() + playerSpeed);
+            rightPlayer.imagex += playerSpeed;
         }
 
         if (keyHandler.leftPressed ^ keyHandler.rightPressed) {
-            rightPlayer.action = MoveType.WALK;
+            rightPlayer.isMoving = true;
             rightPlayer.frameTickRate = 4;
+        } else {
+            rightPlayer.isMoving = false;
         }
 
         leftPlayer.setY(leftPlayer.getY() + leftPlayer.yvel);
+        leftPlayer.imagey += leftPlayer.yvel;
         leftPlayer.yvel += 2;
 
         rightPlayer.setY(rightPlayer.getY() + rightPlayer.yvel);
+        rightPlayer.imagey += rightPlayer.yvel;
         rightPlayer.yvel += 2;
 
     }
 
     private void updatePlayerBounds(Player player) {
-        if (player.getX() < 0) player.setX(0);
-        if (player.getX() > SCREEN_WIDTH - player.getWidth()) player.setX(SCREEN_WIDTH - player.getWidth());
-        if (player.getY() < 0) player.setY(0);
+        if (player.getX() < 0) {
+            player.setX(0);
+            player.imagex = 0;
+        }
+        if (player.getX() > SCREEN_WIDTH - player.getWidth()) {
+            player.setX(SCREEN_WIDTH - player.getWidth());
+            player.imagex = SCREEN_WIDTH - player.getWidth();
+        }
+        if (player.getY() < 0) {
+            player.setY(0);
+            player.imagey = 0;
+        }
         if (player.getY() >= SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
             player.isGrounded = true;
             player.setY(SCREEN_HEIGHT * 3 / 4 - player.getHeight());
+            player.imagey = SCREEN_HEIGHT * 3 / 4- player.getHeight();
         } else player.isGrounded = false;
     }
 }

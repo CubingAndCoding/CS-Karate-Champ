@@ -8,6 +8,7 @@ public class Player extends Sprite {
     public int frame;
     public int frameTickRate;
     public int freezeFrames;
+    public boolean isMoving;
     public MoveType action;
 
     int yvel = 0;
@@ -22,11 +23,22 @@ public class Player extends Sprite {
     Image[] walkFrames;
     Image[] idleFrames;
 
-    public Player(int x, int y, int width, int height) {
+    int imagex;
+    int imagey;
+    int imageWidth;
+    int imageHeight;
+
+    public Player(int x, int y, int width, int height, int imagex, int imagey, int imageWidth, int imageHeight) {
         super(x, y, width, height);
+        this.imagex = imagex;
+        this.imagey = imagey;
+        this.imageWidth = imageWidth;
+        this.imageHeight = imageHeight;
+
         isGrounded = true;
         freezeFrames = 0;
         action = MoveType.NONE;
+        isMoving = false;
 
         setupImages();
     }
@@ -110,20 +122,21 @@ public class Player extends Sprite {
 
         if (frameTickRate == 0) frameTickRate = 1;
 
+        if (isMoving && action == MoveType.NONE) {
+            int curFrame = frame / frameTickRate % walkFrames.length;
+            g2.drawImage(walkFrames[curFrame], imagex, imagey, imageWidth, imageHeight, null);
+        }
+
         switch (action) {
             case MoveType.NONE -> {
+                if (isMoving) break;
                 int curFrame = frame / frameTickRate % idleFrames.length;
-                g2.drawImage(idleFrames[curFrame], getX(), getY(), getWidth(), getHeight(), null);
-            }
-
-            case MoveType.WALK -> {
-                int curFrame = frame / frameTickRate % walkFrames.length;
-                g2.drawImage(walkFrames[curFrame], getX(), getY(), getWidth(), getHeight(), null);
+                g2.drawImage(idleFrames[curFrame], imagex, imagey, imageWidth, imageHeight, null);
             }
 
             case MoveType.JUMP -> {
                 frame %= jumpFrames.length;
-                g2.drawImage(jumpFrames[frame], getX(), getY(), getWidth(), getHeight(), null);
+                g2.drawImage(jumpFrames[frame], imagex, imagey, imageWidth, imageHeight, null);
             }
         }
 
