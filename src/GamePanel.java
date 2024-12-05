@@ -275,7 +275,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (player.getY() >= SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
             player.isGrounded = true;
             player.setY(SCREEN_HEIGHT * 3 / 4 - player.getHeight());
-            player.imagey = SCREEN_HEIGHT * 3 / 4- player.getHeight();
+            player.imagey = SCREEN_HEIGHT * 3 / 4 - player.imageHeight;
         } else player.isGrounded = false;
     }
 }
