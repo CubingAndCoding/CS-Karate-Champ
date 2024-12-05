@@ -52,8 +52,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        leftPlayer = new Player(player1X, player1Y, TILE_SIZE / 2, TILE_SIZE, player1X, player1Y, TILE_SIZE, TILE_SIZE);
-        rightPlayer = new Player(player2X, player2Y, TILE_SIZE / 2, TILE_SIZE, player2X, player2Y, TILE_SIZE, TILE_SIZE);
+        leftPlayer = new Player(player1X, player1Y, TILE_SIZE / 2, TILE_SIZE, player1X, player1Y, TILE_SIZE, TILE_SIZE, "left");
+        rightPlayer = new Player(player2X, player2Y, TILE_SIZE / 2, TILE_SIZE, player2X, player2Y, TILE_SIZE, TILE_SIZE, "right");
 
         double drawInterval = 1_000_000_000./FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;

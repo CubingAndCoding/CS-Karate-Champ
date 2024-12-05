@@ -28,12 +28,15 @@ public class Player extends Sprite {
     int imageWidth;
     int imageHeight;
 
-    public Player(int x, int y, int width, int height, int imagex, int imagey, int imageWidth, int imageHeight) {
+    String side;
+
+    public Player(int x, int y, int width, int height, int imagex, int imagey, int imageWidth, int imageHeight, String side) {
         super(x, y, width, height);
         this.imagex = imagex;
         this.imagey = imagey;
         this.imageWidth = imageWidth;
         this.imageHeight = imageHeight;
+        this.side = side;
 
         isGrounded = true;
         freezeFrames = 0;
@@ -51,12 +54,12 @@ public class Player extends Sprite {
         try {
             idleFrames = new Image[1];
             for (int i = 0; i < idleFrames.length; i++) {
-                idleFrames[i] = returnImage("/left player/idle/idle_" + i + ".png");
+                idleFrames[i] = returnImage("/"+ side+" player/idle/idle_" + i + ".png");
             }
 
             walkFrames = new Image[2];
             for (int i = 0; i < walkFrames.length; i++) {
-                walkFrames[i] = returnImage("/left player/walk/walk_" + i + ".png");
+                walkFrames[i] = returnImage("/"+ side+" player/walk/walk_" + i + ".png");
             }
 
             jumpFrames = new Image[1];
