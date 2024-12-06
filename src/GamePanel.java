@@ -22,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
     int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
     int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE;
     int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
-    int playerSpeed = 4;
+    int playerSpeed = 6;
+
     Player leftPlayer;
     Player rightPlayer;
     
