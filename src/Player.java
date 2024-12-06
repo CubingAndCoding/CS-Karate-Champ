@@ -18,7 +18,7 @@ public class Player extends Sprite {
     Image[] punchFrames;
     Image[] blockFrames;
     Image[] frontKickFrames;
-    Image[] backKickFrames;
+    Image[] lowKickFrames;
 
     Image[] walkFrames;
     Image[] idleFrames;
@@ -66,6 +66,27 @@ public class Player extends Sprite {
             for (int i = 0; i < jumpFrames.length; i++) {
                 jumpFrames[i] = returnImage("/"+ side+ " player/jump/jump_" + i + ".png");
             }
+
+            punchFrames = new Image[2];
+            for (int i = 0; i < punchFrames.length; i++) {
+                punchFrames[i] = returnImage("/" + side+" player/punch/punch_"+i+".png");
+            }
+
+            blockFrames = new Image[1];
+            for (int i = 0; i < blockFrames.length; i++) {
+                blockFrames[i] =returnImage("/" + side+ " player/block/block_"+i+".png");
+            }
+
+            lowKickFrames = new Image[1];
+            for (int i = 0; i < lowKickFrames.length; i++) {
+                lowKickFrames[i] = returnImage("/" + side+" player/kick/lkick_"+i+".png");
+            }
+
+            frontKickFrames = new Image[1];
+            for (int i = 0; i < frontKickFrames.length; i++) {
+                frontKickFrames[i] = returnImage("/"+ side+ " player/kick/fkick_" + i+".png");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,15 +145,35 @@ public class Player extends Sprite {
         }
 
         switch (action) {
-            case MoveType.NONE -> {
+            case NONE -> {
                 if (isMoving) break;
                 int curFrame = frame / frameTickRate % idleFrames.length;
                 g2.drawImage(idleFrames[curFrame], imagex, imagey, imageWidth, imageHeight, null);
             }
 
-            case MoveType.JUMP -> {
+            case JUMP -> {
                 frame %= jumpFrames.length;
                 g2.drawImage(jumpFrames[frame], imagex, imagey, imageWidth, imageHeight, null);
+            }
+
+            case PUNCH -> {
+                frame%= punchFrames.length;
+                g2.drawImage(punchFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case BLOCK -> {
+                frame%= blockFrames.length;
+                g2.drawImage(blockFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case FRONT_KICK -> {
+                frame%= frontKickFrames.length;
+                g2.drawImage(frontKickFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case BACK_KICK -> {
+                frame%= lowKickFrames.length;
+                g2.drawImage(lowKickFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
             }
         }
 
