@@ -18,7 +18,7 @@ public class Player extends Sprite {
     Image[] punchFrames;
     Image[] blockFrames;
     Image[] frontKickFrames;
-    Image[] lowKickFrames;
+    Image[] backKickFrames;
 
     Image[] walkFrames;
     Image[] idleFrames;
@@ -67,7 +67,7 @@ public class Player extends Sprite {
                 jumpFrames[i] = returnImage("/"+ side+ " player/jump/jump_" + i + ".png");
             }
 
-            punchFrames = new Image[2];
+            punchFrames = new Image[1];
             for (int i = 0; i < punchFrames.length; i++) {
                 punchFrames[i] = returnImage("/" + side+" player/punch/punch_"+i+".png");
             }
@@ -77,14 +77,19 @@ public class Player extends Sprite {
                 blockFrames[i] =returnImage("/" + side+ " player/block/block_"+i+".png");
             }
 
-            lowKickFrames = new Image[1];
-            for (int i = 0; i < lowKickFrames.length; i++) {
-                lowKickFrames[i] = returnImage("/" + side+" player/kick/lkick_"+i+".png");
+            backKickFrames = new Image[1];
+            for (int i = 0; i < backKickFrames.length; i++) {
+                backKickFrames[i] = returnImage("/" + side+" player/kick/lkick_"+i+".png");
             }
 
             frontKickFrames = new Image[1];
             for (int i = 0; i < frontKickFrames.length; i++) {
                 frontKickFrames[i] = returnImage("/"+ side+ " player/kick/fkick_" + i+".png");
+            }
+
+            duckFrames = new Image[1];
+            for (int i = 0; i < duckFrames.length; i++) {
+                duckFrames[i] = returnImage("/" + side+ " player/duck/duck_"+i+".png");
             }
 
         } catch (Exception e) {
@@ -122,7 +127,7 @@ public class Player extends Sprite {
     public void jump() {
         frameTickRate = 1;
         isGrounded = false;
-        yvel = -20;
+        yvel = -17;
         action = MoveType.JUMP;
     }
 
@@ -172,8 +177,13 @@ public class Player extends Sprite {
             }
 
             case BACK_KICK -> {
-                frame%= lowKickFrames.length;
-                g2.drawImage(lowKickFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
+                frame%= backKickFrames.length;
+                g2.drawImage(backKickFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case DUCK -> {
+                frame%= duckFrames.length;
+                g2.drawImage(duckFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
             }
         }
 
