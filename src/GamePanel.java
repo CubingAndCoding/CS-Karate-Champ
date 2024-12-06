@@ -22,7 +22,8 @@ public class GamePanel extends JPanel implements Runnable {
     int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
     int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE;
     int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
-    int playerSpeed = 4;
+    int playerSpeed = 6;
+
     Player leftPlayer;
     Player rightPlayer;
     
@@ -91,10 +92,6 @@ public class GamePanel extends JPanel implements Runnable {
         rightPlayer.imagex = rightPlayer.getX() - rightPlayer.getWidth();
 
         if (leftPlayer.freezeFrames == 0) {
-            if (leftPlayer.action == MoveType.DUCK) {
-                leftPlayer.resetDuck();
-            }
-
             if (!keyHandler.aPressed && !keyHandler.dPressed) {
                 leftPlayer.isMoving = false;
             }
@@ -116,10 +113,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
 
         if (rightPlayer.freezeFrames == 0) {
-            if (rightPlayer.action == MoveType.DUCK) {
-                rightPlayer.resetDuck();
-            }
-
             if (!keyHandler.leftPressed && !keyHandler.rightPressed)
                 rightPlayer.isMoving = false;
             rightPlayer.action = MoveType.NONE;
@@ -275,7 +268,7 @@ public class GamePanel extends JPanel implements Runnable {
         if (player.getY() >= SCREEN_HEIGHT * 3 / 4 - player.getHeight()) {
             player.isGrounded = true;
             player.setY(SCREEN_HEIGHT * 3 / 4 - player.getHeight());
-            player.imagey = SCREEN_HEIGHT * 3 / 4- player.getHeight();
+            player.imagey = SCREEN_HEIGHT * 3 / 4 - player.imageHeight;
         } else player.isGrounded = false;
     }
 }

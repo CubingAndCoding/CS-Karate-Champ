@@ -67,10 +67,31 @@ public class Player extends Sprite {
                 jumpFrames[i] = returnImage("/"+ side+ " player/jump/jump_" + i + ".png");
             }
 
+            punchFrames = new Image[1];
+            for (int i = 0; i < punchFrames.length; i++) {
+                punchFrames[i] = returnImage("/" + side+" player/punch/punch_"+i+".png");
+            }
+
+            blockFrames = new Image[1];
+            for (int i = 0; i < blockFrames.length; i++) {
+                blockFrames[i] =returnImage("/" + side+ " player/block/block_"+i+".png");
+            }
+
+            backKickFrames = new Image[1];
+            for (int i = 0; i < backKickFrames.length; i++) {
+                backKickFrames[i] = returnImage("/" + side+" player/kick/lkick_"+i+".png");
+            }
+
+            frontKickFrames = new Image[1];
+            for (int i = 0; i < frontKickFrames.length; i++) {
+                frontKickFrames[i] = returnImage("/"+ side+ " player/kick/fkick_" + i+".png");
+            }
+
             duckFrames = new Image[1];
             for (int i = 0; i < duckFrames.length; i++) {
-                duckFrames[i]  =returnImage("/"+ side+ " player/duck/duck_"+i+ ".png");
+                duckFrames[i] = returnImage("/" + side+ " player/duck/duck_"+i+".png");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,8 +119,6 @@ public class Player extends Sprite {
     }
 
     public void duck() {
-        setHeight(getHeight() >> 1);
-        setY(getY() + getHeight());
         frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.DUCK;
@@ -108,7 +127,7 @@ public class Player extends Sprite {
     public void jump() {
         frameTickRate = 1;
         isGrounded = false;
-        yvel = -20;
+        yvel = -17;
         action = MoveType.JUMP;
     }
 
@@ -116,11 +135,6 @@ public class Player extends Sprite {
         frameTickRate = 1;
         freezeFrames = 0;
         action = MoveType.BLOCK;
-    }
-
-    public void resetDuck() {
-        setY(getY() - getHeight());
-        setHeight(getHeight() << 1);
     }
 
     @Override
@@ -136,20 +150,40 @@ public class Player extends Sprite {
         }
 
         switch (action) {
-            case MoveType.NONE -> {
+            case NONE -> {
                 if (isMoving) break;
                 int curFrame = frame / frameTickRate % idleFrames.length;
                 g2.drawImage(idleFrames[curFrame], imagex, imagey, imageWidth, imageHeight, null);
             }
 
-            case MoveType.JUMP -> {
+            case JUMP -> {
                 frame %= jumpFrames.length;
                 g2.drawImage(jumpFrames[frame], imagex, imagey, imageWidth, imageHeight, null);
             }
 
-            case MoveType.DUCK -> {
-                frame %= duckFrames.length;
-                g2.drawImage(duckFrames[frame], imagex, imagey-52, imageWidth, imageHeight, null);
+            case PUNCH -> {
+                frame%= punchFrames.length;
+                g2.drawImage(punchFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case BLOCK -> {
+                frame%= blockFrames.length;
+                g2.drawImage(blockFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case FRONT_KICK -> {
+                frame%= frontKickFrames.length;
+                g2.drawImage(frontKickFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case BACK_KICK -> {
+                frame%= backKickFrames.length;
+                g2.drawImage(backKickFrames[frame], imagex,imagey,imageWidth,imageHeight,null);
+            }
+
+            case DUCK -> {
+                frame%= duckFrames.length;
+                g2.drawImage(duckFrames[frame],imagex,imagey,imageWidth,imageHeight,null);
             }
         }
 
