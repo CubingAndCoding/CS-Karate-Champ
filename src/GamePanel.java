@@ -19,9 +19,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Player settings
     int player1X = SCREEN_WIDTH / 4;
-    int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
+    int player1Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE-10;
     int player2X = SCREEN_WIDTH  * 3 / 4 - TILE_SIZE;
-    int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE;
+    int player2Y = SCREEN_HEIGHT * 3 / 4 - TILE_SIZE-10;
     int playerSpeed = 6;
 
     Player leftPlayer;
@@ -208,38 +208,42 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void updateMovement() {
-        if (keyHandler.aPressed) {
-            leftPlayer.setX(leftPlayer.getX() - playerSpeed);
-            leftPlayer.imagex -= playerSpeed;
+        if (leftPlayer.action == MoveType.NONE || leftPlayer.action == MoveType.JUMP) {
+            if (keyHandler.aPressed) {
+                leftPlayer.setX(leftPlayer.getX() - playerSpeed);
+                leftPlayer.imagex -= playerSpeed;
+            }
+
+            if (keyHandler.dPressed) {
+                leftPlayer.setX(leftPlayer.getX() + playerSpeed);
+                leftPlayer.imagex += playerSpeed;
+            }
+
+            if (keyHandler.aPressed ^ keyHandler.dPressed) {
+                leftPlayer.isMoving = true;
+                leftPlayer.frameTickRate = 4;
+            } else {
+                leftPlayer.isMoving = false;
+            }
         }
 
-        if (keyHandler.dPressed) {
-            leftPlayer.setX(leftPlayer.getX() + playerSpeed);
-            leftPlayer.imagex += playerSpeed;
-        }
+        if (rightPlayer.action == MoveType.NONE || rightPlayer.action == MoveType.JUMP) {
+            if (keyHandler.leftPressed) {
+                rightPlayer.setX(rightPlayer.getX() - playerSpeed);
+                rightPlayer.imagex -= playerSpeed;
+            }
 
-        if (keyHandler.aPressed ^ keyHandler.dPressed) {
-            leftPlayer.isMoving = true;
-            leftPlayer.frameTickRate = 4;
-        } else {
-            leftPlayer.isMoving = false;
-        }
+            if (keyHandler.rightPressed) {
+                rightPlayer.setX(rightPlayer.getX() + playerSpeed);
+                rightPlayer.imagex += playerSpeed;
+            }
 
-        if (keyHandler.leftPressed) {
-            rightPlayer.setX(rightPlayer.getX() - playerSpeed);
-            rightPlayer.imagex -= playerSpeed;
-        }
-
-        if (keyHandler.rightPressed) {
-            rightPlayer.setX(rightPlayer.getX() + playerSpeed);
-            rightPlayer.imagex += playerSpeed;
-        }
-
-        if (keyHandler.leftPressed ^ keyHandler.rightPressed) {
-            rightPlayer.isMoving = true;
-            rightPlayer.frameTickRate = 4;
-        } else {
-            rightPlayer.isMoving = false;
+            if (keyHandler.leftPressed ^ keyHandler.rightPressed) {
+                rightPlayer.isMoving = true;
+                rightPlayer.frameTickRate = 4;
+            } else {
+                rightPlayer.isMoving = false;
+            }
         }
 
         leftPlayer.setY(leftPlayer.getY() + leftPlayer.yvel);
