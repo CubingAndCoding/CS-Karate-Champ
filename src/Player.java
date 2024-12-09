@@ -99,22 +99,19 @@ public class Player extends Sprite {
 
     public void frontKick() {
         frameTickRate = 4;
-        freezeFrames = 4 * punchFrames.length;
-        freezeFrames = 10;
+        freezeFrames = 2 * punchFrames.length;
         action = MoveType.FRONT_KICK;
     }
 
     public void backKick() {
         frameTickRate = 4;
-        freezeFrames = 4 * punchFrames.length;
-        freezeFrames = 10;
+        freezeFrames = 2 * punchFrames.length;
         action = MoveType.BACK_KICK;
     }
 
     public void punch() {
         frameTickRate = 4;
-        freezeFrames = 4 * punchFrames.length;
-        freezeFrames = 10;
+        freezeFrames = 2 * punchFrames.length;
         action = MoveType.PUNCH;
     }
 
@@ -139,9 +136,6 @@ public class Player extends Sprite {
 
     @Override
     public void draw(Graphics2D g2, Color color) {
-        g2.setColor(color);
-        g2.drawRect(getX(), getY(), getWidth(), getHeight());
-
         if (frameTickRate == 0) frameTickRate = 1;
 
         if (isMoving && action == MoveType.NONE) {
